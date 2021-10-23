@@ -1,0 +1,283 @@
+%en donde dice 10pt es para cambiar el tamaño de la letra  detodo el documento, solo el numero, two column es para 2 columnas y el documento es de tipo article
+\documentclass[a4paper, twocolumn, 10pt]{article} 
+
+% para importar algunos paquetes
+\usepackage[utf8]{inputenc} 
+
+% seteando margenes
+\usepackage[left=2cm,top=4cm,right=2cm,bottom=2cm]{geometry}
+
+% para las graficas
+\usepackage{graphicx}
+
+% para hiperlinks
+\usepackage{hyperref}
+
+\usepackage{url}
+
+% para los encabezados de pagina
+\usepackage{fancyhdr}
+
+% idiomas español e ingles
+\usepackage[spanish, english]{babel}
+
+%para citas (normas apa), usar \citet{refenrecia} y \citep{refenrecia} para citar
+\usepackage{natbib}
+
+% distancia entre encabezado y texto
+\headsep = 10pt
+
+% para el encabezado de la primera pagina
+\fancypagestyle{plain}{
+    % parte izquierda
+    \fancyhead[L]{
+        % imagen de la udea
+        \begin{picture}(0,0)\put(0,0) {
+            \includegraphics[width=5cm]{./udea2.png}
+        } 
+        \end{picture}
+    }
+    % parte central
+    \fancyhead[C]{}
+    % parte derecha
+    \fancyhead[R]{\thepage}
+    % linea horizontal mas gruesa
+    \renewcommand{\headrulewidth}{2pt}
+}
+
+% para el encabezado de las paginas 
+\pagestyle{fancy}{ 
+    % parte izquierda encabezado
+    \lhead{Instituto de Física, Universidad de Antioquia}
+    % parte central encabezado
+    \chead{}
+    % parte derecha encabezado
+    \rhead{\thepage}
+    % linea horizontal
+    \renewcommand{\headrulewidth}{0.5pt}
+}
+
+
+%title es para poner el titulo 
+\title{ 
+    %textbf es para poner negrilla
+    \textbf{Proyecto Python} 
+}
+
+%author es para poner los autores
+\author{ 
+    % para los pies de pagina que no se anidan
+    \renewcommand{\thefootnote}{\arabic{footnote}}
+    % textit es para poner cursiva
+    \textit{Kevin Albeiro Zapata Ciro\footnotemark[1]}
+} 
+
+% para poner la fecha, si se deja en blanco no queda nada.
+\date{}
+
+% para empezar documento
+\begin{document} 
+
+% todo lo de twocolumn es para que quede en una sola columna
+\twocolumn[\begin{@twocolumnfalse} 
+
+% para poner titulo en el documento
+\maketitle
+
+%seteando idioma español
+\selectlanguage{spanish}
+
+
+%linea horizontal
+\hrulefill
+
+%para el salto de linea con espacio
+\vspace{5mm} 
+    \vfill
+
+
+\end{@twocolumnfalse}]
+
+%textos de los pies de pagina
+\footnotetext[1]{
+    \textit{albeiro.zapata@udea.edu.co}
+}
+
+%secciones numeradas
+\section{Teoria general}
+    La ecuacion de Schrödinger independiente del tiempo unidimensional esta dada por:
+    \begin{equation}
+        [- \frac{\hbar^{2}}{2m} \frac{d^{2}}{dx^{2}} + V(x)] \psi(x) = E\psi(x)
+        \label{SchEqn}
+    \end{equation}
+    Donde $\hbar$ es la constante de planck reducida; $m$ es la masa de la particula; $V(x)$ es el potencial al que esta sujeto la particula y se asumira independiente del tiempo; $E$ es la energia total de la particula; y $\psi(x)$ es la funcion de onda de la particula (en verdad es la funcion de onda en el tiempo $t=0$).
+    
+    Esta ecuacion puede interpretarse como uno de los postulados de la mecanica cuantica, y esta nos 
+    dara indicios de como es la evolucion del sistema (vease \cite{quantum-cohen}). La ecuacion \ref{SchEqn} se ha separado la parte espacial (asociada a $x$) con la parte temporal. La parte temporal tiene una solucion de la forma:
+    \begin{equation}
+        f(t) = c e^{-iEt/\hbar}
+    \end{equation}
+    Por lo tanto, la funcion de onda estara dada por:
+    \begin{equation}
+        \psi(x,t) = \psi(x)f(t) = c\psi(x)e^{-iEt/\hbar}
+    \end{equation}
+    Toda energia que cumpla \ref{SchEqn} tendra asociado un $\psi(x)$, estas energias son conocidas como los eigen valores del operador Hamiltoniano y solo algunas son solucion a \ref{SchEqn} (la energia no es un espectro continuo si no uno discreto; esto se puede justificar con que el Hamiltoniano es un observable y uno de los postulados, vease \cite{quantum-cohen}, indica que todo valores medibles son eigenvalores de algun observable), por eso en lugar de $E$, $\psi(x)$ y $c$ se suelen denotar con $E_{n}$, $\psi_{n}(x)$ y $c_{n}$.
+    
+    Por lo tanto, usando el principio de superposicion, la funcion de onda general esta dada por:
+    \begin{equation}
+        \psi(x,t) = \sum_{n=0} c_{n}\psi_{n}(x)e^{-iE_{n}t/\hbar}
+        \label{funOnda}
+    \end{equation}
+    Aqui el $n$ iria hasta todas las soluciones que tenga el sistema dado. Toda solucion que cumpla \ref{funOnda} se llama estado estacionario de la funcion de onda. Las constantes $c_{n}$ pueden ser halladas con:
+    \begin{equation}
+        c_{n} = \int \psi^{*}_{n}(x) \psi(x,o) dx
+        \label{cn}
+    \end{equation}
+    Y estas estan asociadas con la probabilidad y su normalizacion (otro de los postulados, vease \cite{quantum-cohen}). En terminos generales, la densidad de probabilidad estara dada por $|\psi(x,t)|^{2}$.
+
+\subsection{Potencial de paredes infinitas}
+    Si 
+    \begin{equation}
+        V(x) = 
+        \left \{
+        \begin{array}{ll}
+            0, & \textrm{para  } 0 \leq x \leq \frac{a}{2} \\
+            \infty, & \textrm{otro lugar} 
+        \end{array}
+        \right.
+    \end{equation}
+La solucion estara dada por:
+\begin{eqnarray}
+    \psi_{n}(x) = \sqrt{\frac{4}{a}} sen(\frac{2n\pi}{a}x), \textrm{ para  } 0 \leq x \leq \frac{a}{2} \\
+    \psi(x) = 0, \textrm{ para otro lugar} 
+\end{eqnarray}
+
+\subsection{Potencial paredes finitas}
+ Si 
+    \begin{equation}
+        V(x) = 
+        \left \{
+        \begin{array}{ll}
+            -V_{0}, & \textrm{para  } |x| \leq \frac{a}{2} \\
+            0, & \textrm{otro lugar} 
+        \end{array}
+        \right.
+    \end{equation}
+La solucion pueden ser simetricas o antisimetricas, respectivamente:
+\begin{eqnarray}
+    \psi(x)^{(+)} = 
+        \left \{
+        \begin{array}{ll}
+            Be^{kx}, & \textrm{para  } x < -\frac{a}{2} \\
+            Dcos(qx), & \textrm{para  } |x| \leq \frac{a}{2} \\
+            Be^{-kx}, & \textrm{para  } x > \frac{a}{2}
+        \end{array}
+        \right. \\
+    \psi(x)^{(-)} = 
+        \left \{
+        \begin{array}{ll}
+            -Be^{kx}, & \textrm{para  } x < -\frac{a}{2} \\
+            Dsen(qx), & \textrm{para  } |x| \leq \frac{a}{2} \\
+            Be^{-kx}, & \textrm{para  } x > \frac{a}{2}
+        \end{array}
+        \right.
+\end{eqnarray}
+
+con $k = \frac{1}{\hbar} \sqrt{-2mE}$ y $q = \frac{1}{\hbar} \sqrt{2m(E-V_{0})}$.
+
+\subsection{Potencial cuadratico (oscilador armonico cuantico)} 
+    Si
+    \begin{equation}
+        V(x) = x^{2}
+    \end{equation}
+    La solucion estara asociada a los polinomios de Hermite de la forma:
+    \begin{equation}
+        \psi_{n}(y) = (\frac{\alpha}{\pi}) \frac{1}{\sqrt{2^{n}n!}} H_{n}(y)e^{-y^{2}/2}
+    \end{equation}
+    Donde $y = \sqrt{\alpha} x$, $\alpha = \frac{m\omega}{\hbar}$ y $\omega = \sqrt{\frac{2}{m}}$.
+    
+\section{Procedimiento}
+    Se siguio el metodo propuesto en \cite{computational-landau} para hallar los estados ligados de la energia $E_{n}$ en el caso de las paredes finitas, el cual consiste en:
+    
+    1. Tomar un valor de $x<<-a$ para empezar un arreglo que ira aumentando hasta un punto de encuentro $x_0$, junto con un valor de $E_n$.
+    
+    2. Tomar el solucionador de ED numericas de python odeint para solucionar la ecuacion \ref{SchEqn} desde el punto de inicio escogido hasta $x_0$ con las condiciones iniciales de posicion en 0 y velocidad en 1, generando una solucion "por la izquierda".
+    
+    3. Tomar un valor de $x>>a$ para empezar un arreglo que ira disminuyendo hasta un punto de encuentro $x_0$.
+    
+    4. Tomar el solucionador de ED numericas de python odeint para solucionar la ecuacion \ref{SchEqn} desde el punto de inicio escogido hasta $x_0$ con las condiciones iniciales de posicion en 0 y velocidad en 1 (para la solucion simetrica) o -1 (para la solucion antisimetrica), generando una solucion "por la izquierda".
+    
+    5. Tomar la derivada logaritmica por la izquierda en el punto $x_0$ y restarle la derivada logaritmica por la derecha en el punto $x_0$, entre menor sea la diferencia entre estas dos derivadas mejor sera la aproximacion de $E_n$.
+    
+    6. Se repetira el paso 1 para diferentes valores de $E_n$ hasta encontrar todos los estados ligados de manera "manual".
+    
+    7. Para verificar los valores y ver que se cumplan las condiciones de continuidad y suavidad se graficara $\psi(x)$.
+    
+    8. Una vez hallados los estados ligados se graficaran las densidades de probabilidad, se hallara la solucion dependiente del tiempo y se graficara su densidad de probabilidad solucionando \ref{cn}.
+    
+    Todo el codigo usado y comentado se puede hallar en el github.
+    
+\section{Resultados}
+    Para solucionar el problema numericamente se usaron las constantes de $a=2fm$, $-V_{0}=-250MeV$ y $\frac{2m}{\hbar^{2}}\approx0.0483MeV^{-1}fm^{-2}$, estos valores fueron tomados siguiendo como ejemplo a \cite{computational-landau}.
+\subsection{Potencial paredes finitas}
+    Los primeros cuatro niveles de energia hallados en este caso fueron (con sus respectivas densidades):
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,1.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,1d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,2.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,2d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,3.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,3d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,4.png}
+    
+    \includegraphics[width=0.45\textwidth]{./a2,v-250,4d.png}
+    
+    La densidad de la funcion de onda dependiente del tiempo en $t=0s$ coincide con la densidad del primer nivel de energia y es:
+    
+    \includegraphics[width=0.45\textwidth]{./densidad1.png}
+    
+\subsection{Potencial cuadratico} 
+    Los primeros cuatro niveles de energia hallados en este caso fueron (con sus respectivas densidades):
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E0.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E0d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E1.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E1d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E2.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E2d.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E3.png}
+    
+    \includegraphics[width=0.45\textwidth]{./cua, E3d.png}
+    
+    La densidad de la funcion de onda dependiente del tiempo en $t=1000s$:
+    
+    \includegraphics[width=0.45\textwidth]{./cua, t.png}
+        
+\section{Conclusiones}
+
+     Me basare en analizis grafico para evitar volver muy complejo el analisis. En general los resultados obtenidos estan bien dentro de las unidades de $fm$ y $MeV$, un cambio en estas (para una unidad mas pequeña) podria ocacionar underflows o overflows dentro del codigo por lo que se debe tener cuidado.
+     
+     El metodo usado muestra ser eficaz y eficiente, aun asi se deben probar diferentes valores de energia a mano hasta hallar los valores que mejor se ajusten siguiendo el "criterio de las graficas" (que en el punto de union la solucion por la izquierda y por la derecha coincidan); en\cite{computational-landau} proponen una manera de automatizar la busqueda (mediante un algoritmo de biseccion), pero esta puede hacer que el algoritmo sea ineficiente e ineficaz y por eso opte por no realizarla.
+     
+     
+\subsection{Teoria vs Resultados}
+     La parte de el pozo de potencial coincide con las graficas que se suelen mostrar en la literatura (vease por ejemplo \cite{hyper2}), tambien se cambio el valor de $V_{0}$ y se vio que a menor pozo menos estados ligados aparecian, lo cual coincide enormemento con la teoria dada por ecuaciones en las que se intercepta una grafica de la tangente con una raiz cuadrada, generalmente presentada para solucionar este problema. Algo que en lo que no coincidia es en los estados dados por la formula en la que aproximan las energias de estados ligados, generalmente dadas en la literatura (como en \cite{quantum-cohen}) y que sale de la formula de la tangente; pero por falta de tiempo no pude estudiar bien la teoria y ver hasta que punto utilice bien esta formula.
+     
+    La parte del oscilador armonico cuantico concide enormemente con las soluciones dadas en \cite{hyper1}, donde los dos primeros niveles son limites clasicos y a medida que se aumenta la energia los estados ligados se deforman debido a la aparicion de los polinomios de Hermite. Este caso sirve para comprobar que el algoritmo soluciona bien el prooblema planteado, dandonos mas confianza para usarlo en futuros problemas.
+    
+    En todos los casos el uso de la solucion dependiente del tiempo condujo a la misma grafica (misma distribucion de probabilidad), independientemente del tiempo que se usara.
+\bibliographystyle{plain} 
+\bibliography{biblio}
+\end{document}
